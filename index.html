@@ -105,14 +105,15 @@
       .cards{grid-template-columns:repeat(3,1fr)}
     }
   </style>
-</head>
+  <link rel="preload" as="image" href="HedgeDCAlogo.png" />
+$1
 <body>
   <!-- HEADER -->
   <header class="site-header" id="site-header">
     <div class="container">
       <div class="nav-wrap">
         <a href="#" class="brand" aria-label="HedgeDCA Home">
-          <img src="/HedgeDCAlogo.png" alt="HedgeDCA logo" />
+          <img class="logo" src="HedgeDCAlogo.png" data-fallback='["/HedgeDCAlogo.png","/images/HedgeDCAlogo.png","images/HedgeDCAlogo.png"]' alt="HedgeDCA logo" />
           <span class="tagline">Moving Beyond the <span class="accent">Average</span></span>
         </a>
 
@@ -213,7 +214,7 @@
   <footer class="site-footer" id="site-footer">
     <div class="container footer-inner">
       <div class="footer-top">
-        <img src="/HedgeDCAlogo.png" alt="HedgeDCA logo small" />
+        <img class="logo" src="HedgeDCAlogo.png" data-fallback='["/HedgeDCAlogo.png","/images/HedgeDCAlogo.png","images/HedgeDCAlogo.png"]' alt="HedgeDCA logo small" />
         <strong>HedgeDCA</strong>
       </div>
       <div class="small">© <span id="year"></span> HedgeDCA. All rights reserved.</div>
@@ -245,6 +246,19 @@
           expanded ? close() : open();
         });
       }
+    })();
+        // Robust logo fallback: try alternate paths if 1st fails
+      document.querySelectorAll('img.logo[data-fallback]').forEach(img => {
+        const list = JSON.parse(img.getAttribute('data-fallback')) || [];
+        let i = 0;
+        img.addEventListener('error', function onErr(){
+          if(i < list.length){
+            img.src = list[i++];
+          } else {
+            img.removeEventListener('error', onErr);
+          }
+        });
+      });
     })();
   </script>
 </body>
