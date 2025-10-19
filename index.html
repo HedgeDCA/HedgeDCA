@@ -8,207 +8,218 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="images/HedgeDCAlogo.png" />
 
-  <!-- FINAL WORKING INDEX (inline CSS + JS, proven paths) -->
+  <!--
+    HARDENED INDEX FOR HOSTS THAT INJECT/OVERRIDE CSS
+    - Everything is scoped under #hedgedca-root with high-specificity selectors
+    - Critical colors are also applied via inline style attributes to win any cascade fights
+    - Anchor jump offset fixed via CSS + JS (accounts for sticky header)
+  -->
   <style id="hedgedca-styles">
-    /* Base */
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Noto Sans",sans-serif;color:#222;background:#ffffff}
-    img{max-width:100%;display:block}
-    a{color:inherit;text-decoration:none}
-    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    html{scroll-behavior:smooth}
+
+    /* Scope EVERYTHING to prevent foreign CSS from winning */
+    #hedgedca-root, #hedgedca-root *{box-sizing:border-box}
+    #hedgedca-root{font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Noto Sans",sans-serif;color:#222 !important;background:#ffffff !important}
+    #hedgedca-root img{max-width:100%;display:block}
+    #hedgedca-root a{color:inherit;text-decoration:none}
+    #hedgedca-root .container{max-width:1100px;margin:0 auto;padding:0 20px}
 
     /* Header */
-    .site-header{position:sticky;top:0;z-index:50;background:#ffffff;border-bottom:4px solid #00a99d !important}
-    .nav-wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:84px}
-    .brand{display:flex;align-items:center;gap:16px}
-    .brand img{height:clamp(56px, 10vw, 120px) !important;width:auto}
-    .brand .tagline{font-weight:700;letter-spacing:.2px;white-space:nowrap;font-size:clamp(14px,2.2vw,18px)}
-    .brand .tagline .accent{color:#007e76}
+    #hedgedca-root .site-header{position:sticky;top:0;z-index:50;background:#ffffff !important}
+    #hedgedca-root .nav-wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:86px}
+    #hedgedca-root .brand{display:flex;align-items:center;gap:16px}
+    #hedgedca-root .brand img{height:clamp(60px, 10vw, 120px) !important;width:auto}
+    #hedgedca-root .brand .tagline{font-weight:700;letter-spacing:.2px;white-space:nowrap;font-size:clamp(14px,2.1vw,18px)}
+    #hedgedca-root .brand .tagline .accent{color:#007e76 !important}
 
     /* Desktop nav */
-    .nav-links{display:none;gap:22px;align-items:center}
-    .nav-links a{padding:10px 12px;border-radius:10px;font-weight:600}
-    .nav-links a:hover{background:#f5f5f5}
+    #hedgedca-root .nav-links{display:none;gap:22px;align-items:center}
+    #hedgedca-root .nav-links a{padding:10px 12px;border-radius:10px;font-weight:600}
+    #hedgedca-root .nav-links a:hover{background:#f5f5f5}
 
     /* CTA */
-    .cta{display:none}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;border:1px solid #007e76;color:#fff;background:linear-gradient(135deg,#00a99d,#007e76);box-shadow:0 10px 25px rgba(0,0,0,.08);font-weight:700;transition:filter .2s, transform .2s}
-    .btn:hover{filter:saturate(1.1);transform:translateY(-1px)}
+    #hedgedca-root .cta{display:none}
+    #hedgedca-root .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;border:1px solid #007e76;color:#fff;background:linear-gradient(135deg,#00a99d,#007e76) !important;box-shadow:0 10px 25px rgba(0,0,0,.08);font-weight:700;transition:filter .2s, transform .2s}
+    #hedgedca-root .btn:hover{filter:saturate(1.1);transform:translateY(-1px)}
 
     /* Hamburger */
-    .burger{appearance:none;border:0;background:#fff;padding:12px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,.08);display:inline-flex;flex-direction:column;gap:5px;cursor:pointer}
-    .burger span{width:26px;height:3px;background:#333;border-radius:2px;transition:transform .3s,opacity .3s}
-    .burger[aria-expanded="true"] span:nth-child(1){transform:translateY(8px) rotate(45deg)}
-    .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
-    .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+    #hedgedca-root .burger{appearance:none;border:0;background:#fff;padding:12px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,.08);display:inline-flex;flex-direction:column;gap:5px;cursor:pointer}
+    #hedgedca-root .burger span{width:26px;height:3px;background:#333;border-radius:2px;transition:transform .3s,opacity .3s}
+    #hedgedca-root .burger[aria-expanded="true"] span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+    #hedgedca-root .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+    #hedgedca-root .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
 
     /* Mobile dropdown */
-    .mobile-panel{overflow:hidden;max-height:0;transition:max-height .35s ease}
-    .mobile-panel.open{max-height:420px}
-    .mobile-inner{padding:10px 0 16px;border-bottom:1px solid #eee}
-    .mobile-menu{display:grid;gap:8px}
-    .mobile-menu a{padding:12px;border-radius:12px;font-weight:600}
-    .mobile-menu a:hover{background:#f5f5f5}
+    #hedgedca-root .mobile-panel{overflow:hidden;max-height:0;transition:max-height .35s ease}
+    #hedgedca-root .mobile-panel.open{max-height:420px}
+    #hedgedca-root .mobile-inner{padding:10px 0 16px;border-bottom:1px solid #eee}
+    #hedgedca-root .mobile-menu{display:grid;gap:8px}
+    #hedgedca-root .mobile-menu a{padding:12px;border-radius:12px;font-weight:600}
+    #hedgedca-root .mobile-menu a:hover{background:#f5f5f5}
 
     /* Hero */
-    .hero{padding:48px 0;background:linear-gradient(180deg,#eafffc,#ffffff)}
-    .hero-card{border:2px solid #e0faf6;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,.08);padding:28px;display:grid;gap:18px}
-    .kicker{font-weight:700;color:#007e76;letter-spacing:.3px}
-    .headline{font-size:clamp(30px, 4.5vw, 44px);line-height:1.12;margin:0;font-weight:800}
-    .sub{color:#333;max-width:60ch}
+    #hedgedca-root .hero{padding:48px 0}
+    #hedgedca-root .hero-card{border:2px solid #e0faf6;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,.08);padding:28px;display:grid;gap:18px;background:#ffffff}
+    #hedgedca-root .kicker{font-weight:700;color:#007e76;letter-spacing:.3px}
+    #hedgedca-root .headline{font-size:clamp(30px, 4.5vw, 44px);line-height:1.12;margin:0;font-weight:800}
+    #hedgedca-root .sub{color:#333;max-width:60ch}
 
     /* Sections */
-    section{padding:28px 0}
-    .cards{display:grid;grid-template-columns:1fr;gap:16px}
-    .card{border:1px solid #dfe7e6;border-radius:16px;padding:18px;box-shadow:0 10px 25px rgba(0,0,0,.06)}
-    .card h3{margin:6px 0 10px}
+    #hedgedca-root section{padding:28px 0;scroll-margin-top:100px}
+    #hedgedca-root .cards{display:grid;grid-template-columns:1fr;gap:16px}
+    #hedgedca-root .card{border:1px solid #dfe7e6;border-radius:16px;padding:18px;box-shadow:0 10px 25px rgba(0,0,0,.06)}
+    #hedgedca-root .card h3{margin:6px 0 10px}
 
     /* Footer */
-    footer.site-footer{margin-top:36px;background:#0f1f1e;color:#e7fffc}
-    .footer-inner{display:grid;gap:12px;padding:22px 0}
-    .footer-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-    .footer-top img{height:32px}
-    .small{opacity:.9;font-size:.95rem}
-    .fineprint{opacity:.65;font-size:.85rem}
+    #hedgedca-root footer.site-footer{margin-top:36px;background:#0f1f1e;color:#e7fffc}
+    #hedgedca-root .footer-inner{display:grid;gap:12px;padding:22px 0}
+    #hedgedca-root .footer-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    #hedgedca-root .footer-top img{height:34px}
+    #hedgedca-root .small{opacity:.9;font-size:.95rem}
+    #hedgedca-root .fineprint{opacity:.65;font-size:.85rem}
 
     /* Responsive */
     @media (min-width: 860px){
-      .nav-links{display:flex}
-      .cta{display:block}
-      .burger{display:none}
-      .mobile-panel{display:none}
-      .hero{padding:72px 0}
-      .hero-card{padding:36px}
-      section{padding:44px 0}
-      .cards{grid-template-columns:repeat(3,1fr)}
+      #hedgedca-root .nav-links{display:flex}
+      #hedgedca-root .cta{display:block}
+      #hedgedca-root .burger{display:none}
+      #hedgedca-root .mobile-panel{display:none}
+      #hedgedca-root .hero{padding:72px 0}
+      #hedgedca-root .hero-card{padding:36px}
+      #hedgedca-root section{padding:44px 0}
+      #hedgedca-root .cards{grid-template-columns:repeat(3,1fr)}
     }
   </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <header class="site-header" id="site-header">
-    <div class="container">
-      <div class="nav-wrap">
-        <a href="#" class="brand" aria-label="HedgeDCA Home">
-          <img class="logo" src="images/HedgeDCAlogo.png" alt="HedgeDCA logo" />
-          <span class="tagline">Moving Beyond the <span class="accent">Average</span></span>
-        </a>
-
-        <nav class="nav-links" aria-label="Primary">
-          <a href="#features">Features</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#learn">Learn</a>
-          <a href="#contact">Contact</a>
-        </nav>
-
-        <div class="cta">
-          <a class="btn" href="#get-started">Get Started</a>
-        </div>
-
-        <button class="burger" id="burger" aria-expanded="false" aria-controls="mobile-panel" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Mobile dropdown (animated height) -->
-    <div id="mobile-panel" class="mobile-panel" hidden>
-      <div class="container mobile-inner">
-        <nav class="mobile-menu" aria-label="Mobile">
-          <a href="#features">Features</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#learn">Learn</a>
-          <a href="#contact">Contact</a>
-          <a class="btn" href="#get-started" style="justify-self:start;">Get Started</a>
-        </nav>
-      </div>
-    </div>
-  </header>
-
-  <!-- MAIN -->
-  <main>
-    <section class="hero">
+  <div id="hedgedca-root">
+    <!-- HEADER -->
+    <header class="site-header" id="site-header" style="border-bottom:6px solid #00a99d;">
       <div class="container">
-        <div class="hero-card">
-          <div class="kicker">HedgeDCA</div>
-          <h1 class="headline">Portfolio discipline without the spreadsheet headache.</h1>
-          <p class="sub">Automate rules, visualize targets, and execute with confidence. Built around your strategy, not someone else’s.</p>
-          <div>
-            <a class="btn" href="#get-started">Launch App</a>
+        <div class="nav-wrap">
+          <a href="#top" class="brand" aria-label="HedgeDCA Home">
+            <img class="logo" src="images/HedgeDCAlogo.png" alt="HedgeDCA logo" />
+            <span class="tagline">Moving Beyond the <span class="accent">Average</span></span>
+          </a>
+
+          <nav class="nav-links" aria-label="Primary">
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#learn">Learn</a>
+            <a href="#contact">Contact</a>
+          </nav>
+
+          <div class="cta">
+            <a class="btn" href="#get-started">Get Started</a>
+          </div>
+
+          <button class="burger" id="burger" aria-expanded="false" aria-controls="mobile-panel" aria-label="Open menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile dropdown (animated height) -->
+      <div id="mobile-panel" class="mobile-panel" hidden>
+        <div class="container mobile-inner">
+          <nav class="mobile-menu" aria-label="Mobile">
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#learn">Learn</a>
+            <a href="#contact">Contact</a>
+            <a class="btn" href="#get-started" style="justify-self:start;">Get Started</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main id="top">
+      <section class="hero" style="background:linear-gradient(180deg,#eafffc,#ffffff);">
+        <div class="container">
+          <div class="hero-card">
+            <div class="kicker">HedgeDCA</div>
+            <h1 class="headline">Portfolio discipline without the spreadsheet headache.</h1>
+            <p class="sub">Automate rules, visualize targets, and execute with confidence. Built around your strategy, not someone else’s.</p>
+            <div>
+              <a class="btn" href="#get-started">Launch App</a>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="features">
-      <div class="container">
-        <div class="cards">
-          <article class="card">
-            <h3>Weighted Targets</h3>
-            <p>Pin BTC, tune tiers, and keep allocations honest with live drift checks.</p>
-          </article>
-          <article class="card">
-            <h3>Rule-Based Ladders</h3>
-            <p>Pre-plan buys/sells with fee-aware AEF math baked in.</p>
-          </article>
-          <article class="card">
-            <h3>Mobile-First</h3>
-            <p>Clean on desktop, sharp on phones. Hamburger menu included.</p>
-          </article>
+      <section id="features">
+        <div class="container">
+          <div class="cards">
+            <article class="card">
+              <h3>Weighted Targets</h3>
+              <p>Pin BTC, tune tiers, and keep allocations honest with live drift checks.</p>
+            </article>
+            <article class="card">
+              <h3>Rule-Based Ladders</h3>
+              <p>Pre-plan buys/sells with fee-aware AEF math baked in.</p>
+            </article>
+            <article class="card">
+              <h3>Mobile-First</h3>
+              <p>Clean on desktop, sharp on phones. Hamburger menu included.</p>
+            </article>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="pricing">
-      <div class="container">
-        <div class="card">
-          <h3>Pricing</h3>
-          <p>Founders beta. Details coming soon.</p>
+      <section id="pricing">
+        <div class="container">
+          <div class="card">
+            <h3>Pricing</h3>
+            <p>Founders beta. Details coming soon.</p>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="learn">
-      <div class="container">
-        <div class="card">
-          <h3>Learn</h3>
-          <p>Guides on DCA discipline, limit orders, and fee-inclusive AEF.</p>
+      <section id="learn">
+        <div class="container">
+          <div class="card">
+            <h3>Learn</h3>
+            <p>Guides on DCA discipline, limit orders, and fee-inclusive AEF.</p>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="contact">
-      <div class="container">
-        <div class="card">
-          <h3>Contact</h3>
-          <p>Questions or feedback? Ping us.</p>
+      <section id="contact">
+        <div class="container">
+          <div class="card">
+            <h3>Contact</h3>
+            <p>Questions or feedback? Ping us.</p>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Tall filler so anchors scroll on desktop for testing -->
-    <section style="height:40vh"></section>
-    <section style="height:40vh"></section>
-  </main>
+      <!-- Tall filler so anchors scroll on desktop for testing -->
+      <section style="height:40vh"></section>
+      <section style="height:40vh"></section>
+    </main>
 
-  <!-- FOOTER (single instance only) -->
-  <footer class="site-footer" id="site-footer">
-    <div class="container footer-inner">
-      <div class="footer-top">
-        <img class="logo" src="images/HedgeDCAlogo.png" alt="HedgeDCA logo small" />
-        <strong>HedgeDCA</strong>
+    <!-- FOOTER (single instance only) -->
+    <footer class="site-footer" id="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-top">
+          <img class="logo" src="images/HedgeDCAlogo.png" alt="HedgeDCA logo small" />
+          <strong>HedgeDCA</strong>
+        </div>
+        <div class="small">© <span id="year"></span> HedgeDCA. All rights reserved.</div>
+        <div class="fineprint">Built for disciplined investors. This site uses cookies only for essential functionality.</div>
       </div>
-      <div class="small">© <span id="year"></span> HedgeDCA. All rights reserved.</div>
-      <div class="fineprint">Built for disciplined investors. This site uses cookies only for essential functionality.</div>
-    </div>
-  </footer>
+    </footer>
+  </div>
 
   <script>
     (function(){
-      // Deduplicate header/footer if stale DOM remains
-      const ids=["site-header","site-footer"]; ids.forEach(id=>{ const els=[...document.querySelectorAll('#'+id)]; if(els.length>1){ els.slice(1).forEach(e=>e.remove()); }});
+      // Guard against duplicate headers/footers
+      ["site-header","site-footer"].forEach(id=>{
+        const els=[...document.querySelectorAll('#'+id)];
+        if(els.length>1) els.slice(1).forEach(e=>e.remove());
+      });
 
       // Footer year
       const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
@@ -224,6 +235,21 @@
           expanded?close():open();
         });
       }
+
+      // Smooth-scroll with header offset (for hosts that ignore scroll-margin-top)
+      const header=document.getElementById('site-header');
+      const offset=()=> (header?.offsetHeight||0) + 14; // 14px breathing room
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click',e=>{
+          const id=a.getAttribute('href');
+          if(!id || id==="#") return;
+          const el=document.querySelector(id);
+          if(!el) return;
+          e.preventDefault();
+          const top=el.getBoundingClientRect().top + window.pageYOffset - offset();
+          window.scrollTo({top,behavior:'smooth'});
+        });
+      });
     })();
   </script>
 </body>
