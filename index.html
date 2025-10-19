@@ -1,151 +1,251 @@
-<!-- v3.0 CLEAN START — single file, no external CSS/JS, no logo image yet -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HedgeDCA | Moving Beyond the Average</title>
-  <meta name="color-scheme" content="light" />
+  <title>HedgeDCA — Moving Beyond the Average</title>
+  <link rel="icon" href="/favicon.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Small badge so we KNOW we’re on the fresh file -->
+  <!--
+    CLEAN RESET INDEX.HTML
+    - Everything is self-contained: styles + scripts are inline
+    - Drop this in as a full replacement so no old code lingers
+    - Uses your brand kit: teal #00a99d, dark teal #007e76, gray #f5f5f5, text #222, font Poppins
+    - Single, non-duplicated footer
+    - Mobile hamburger with animated dropdown
+  -->
   <style>
-    #ver { position: fixed; top: 6px; left: 6px; background:#111; color:#fff; padding:2px 6px;
-           font:12px/1.2 monospace; z-index: 9999; border-radius:4px; opacity:.9; }
-  </style>
-
-  <!-- Inline CSS only (super simple) -->
-  <style>
-    :root { --teal:#00a99d; --darkteal:#007e76; --gray:#f5f5f5; --text:#222; }
-    * { box-sizing:border-box; margin:0; padding:0; }
-    html, body { height:100%; }
-    body {
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background:#fff; color:var(--text);
-      display:flex; flex-direction:column; min-height:100vh;
-      font-size:15px; line-height:1.55;
+    :root{
+      --teal:#00a99d;
+      --teal-dark:#007e76;
+      --gray:#f5f5f5;
+      --text:#222;
+      --bg:#ffffff;
+      --shadow:0 10px 25px rgba(0,0,0,.08);
+      --radius:16px;
+      --maxw:1100px;
     }
-    header {
-      background:linear-gradient(90deg, var(--teal), var(--darkteal));
-      color:#fff; padding:1.2rem 2rem;
-      display:flex; align-items:center; justify-content:space-between; gap:1rem;
-      box-shadow:0 1px 0 rgba(0,0,0,.08);
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Noto Sans",sans-serif;color:var(--text);background:var(--bg)}
+    img{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
+
+    /* Layout helpers */
+    .container{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+    .visually-hidden{position:absolute!important;clip:rect(1px,1px,1px,1px);padding:0;border:0;height:1px;width:1px;overflow:hidden}
+
+    /* Header */
+    .site-header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #eaeaea}
+    .nav-wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:70px}
+
+    .brand{display:flex;align-items:center;gap:14px}
+    .brand img{height:44px;width:auto}
+    .brand .tagline{font-weight:600;letter-spacing:.2px;white-space:nowrap}
+    .brand .tagline .accent{color:var(--teal-dark)}
+
+    /* Desktop nav */
+    .nav-links{display:none;gap:22px;align-items:center}
+    .nav-links a{padding:8px 10px;border-radius:10px;font-weight:500}
+    .nav-links a:hover{background:var(--gray)}
+
+    /* CTA */
+    .cta{display:none}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;border:1px solid var(--teal-dark);color:#fff;background:linear-gradient(135deg,var(--teal),var(--teal-dark));box-shadow:var(--shadow);font-weight:600}
+    .btn:hover{filter:saturate(1.1);transform:translateY(-1px)}
+
+    /* Hamburger */
+    .burger{appearance:none;border:0;background:#fff;padding:10px;border-radius:12px;box-shadow:var(--shadow);display:inline-flex;flex-direction:column;gap:4px;cursor:pointer}
+    .burger span{width:24px;height:2px;background:#333;border-radius:2px;transition:transform .3s,opacity .3s}
+    .burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+    .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+    .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+    /* Mobile dropdown */
+    .mobile-panel{overflow:hidden;max-height:0;transition:max-height .35s ease}
+    .mobile-panel.open{max-height:420px}
+    .mobile-inner{padding:10px 0 16px;border-bottom:1px solid #eee}
+    .mobile-menu{display:grid;gap:8px}
+    .mobile-menu a{padding:12px;border-radius:12px;font-weight:500}
+    .mobile-menu a:hover{background:var(--gray)}
+
+    /* Hero */
+    .hero{padding:48px 0}
+    .hero-card{background:linear-gradient(180deg,#ffffff, #f8fffe);border:1px solid #e7f4f2;border-radius:var(--radius);box-shadow:var(--shadow);padding:28px;display:grid;gap:18px}
+    .kicker{font-weight:600;color:var(--teal-dark);letter-spacing:.3px}
+    .headline{font-size:clamp(28px, 4vw, 40px);line-height:1.12;margin:0;font-weight:700}
+    .sub{color:#444;max-width:60ch}
+
+    /* Sections */
+    section{padding:28px 0}
+    .cards{display:grid;grid-template-columns:1fr;gap:16px}
+    .card{border:1px solid #eee;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    .card h3{margin:6px 0 10px}
+
+    /* Footer */
+    footer.site-footer{margin-top:36px;background:#0f1f1e;color:#e7fffc}
+    .footer-inner{display:grid;gap:12px;padding:22px 0}
+    .footer-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .footer-top img{height:30px}
+    .small{opacity:.9;font-size:.9rem}
+    .fineprint{opacity:.65;font-size:.82rem}
+
+    /* Responsive */
+    @media (min-width: 860px){
+      .nav-links{display:flex}
+      .cta{display:block}
+      .burger{display:none}
+      .mobile-panel{display:none}
+      .hero{padding:64px 0}
+      .hero-card{padding:36px}
+      section{padding:40px 0}
+      .cards{grid-template-columns:repeat(3,1fr)}
     }
-    .brand { font-weight:700; font-size:1.4rem; letter-spacing:.2px; }
-    nav.primary { display:flex; gap:1.2rem; }
-    nav.primary a { color:#fff; text-decoration:none; font-weight:500; opacity:.95; }
-    nav.primary a:hover { opacity:1; }
-
-    /* Mobile menu (pure HTML/CSS via details/summary) */
-    details.menu { display:none; position:relative; }
-    details.menu > summary {
-      list-style:none; cursor:pointer; border:0; background:transparent; color:#fff;
-      display:inline-flex; align-items:center; justify-content:center; padding:.4rem .5rem;
-      font-size:1.4rem; line-height:1;
-    }
-    details.menu > summary::-webkit-details-marker { display:none; }
-    details.menu[open] > summary { opacity:.9; }
-    details.menu nav {
-      position:absolute; right:0; top:calc(100% + 8px);
-      background:linear-gradient(90deg, var(--teal), var(--darkteal));
-      border:1px solid rgba(255,255,255,.25); border-radius:8px;
-      box-shadow:0 6px 18px rgba(0,0,0,.2);
-      padding:.6rem .8rem; display:grid; gap:.4rem; min-width:180px;
-    }
-    details.menu nav a { color:#fff; text-decoration:none; font-weight:500; padding:.45rem .5rem; border-radius:6px; }
-    details.menu nav a:hover { background:rgba(255,255,255,.12); }
-
-    .notice { background:var(--gray); color:var(--darkteal); text-align:center;
-      padding:.6rem 1rem; font-weight:600; border-bottom:1px solid rgba(0,0,0,.05); }
-
-    .hero {
-      flex:1; background:var(--gray);
-      display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
-      padding:4rem 2rem;
-    }
-    .hero h1 { font-size:2.6rem; color:var(--darkteal); margin-bottom:.3em; }
-    .hero h2 { font-size:1.4rem; color:var(--teal); margin-bottom:1.1em; font-weight:500; }
-    .hero p  { font-size:1.02rem; max-width:600px; margin-bottom:2em; }
-    .cta { background:var(--teal); color:#fff; padding:.8em 1.6em; border-radius:6px; text-decoration:none; font-weight:600; }
-    .cta:hover { background:var(--darkteal); }
-    .subtle { margin-top:1rem; color:#666; font-weight:500; }
-
-    .section { padding:3rem 1.5rem; max-width:1000px; margin:0 auto; color:#555; }
-    .section h3 { color:var(--darkteal); margin-bottom:.5rem; }
-
-    footer { background:var(--darkteal); color:#fff; text-align:center; padding:1rem 0; font-size:.9rem; }
-
-    @media (max-width: 600px) {
-      body { font-size:13.6px; line-height:1.5; }
-      header { padding:.85rem 1rem; }
-      nav.primary { display:none; }        /* hide desktop nav */
-      details.menu { display:inline-block; } /* show mobile hamburger */
-      .hero { padding:2.6rem 1.1rem; }
-      .hero h1 { font-size:2.2rem; }
-      .hero h2 { font-size:1.3rem; }
-      .hero p  { font-size:.96rem; }
-      .cta { font-size:.92rem; }
-    }
-    @media (prefers-reduced-motion: reduce) { * { transition:none!important; animation:none!important; } }
   </style>
 </head>
 <body>
-  <div id="ver">v3.0</div>
+  <!-- HEADER -->
+  <header class="site-header" id="site-header">
+    <div class="container">
+      <div class="nav-wrap">
+        <a href="#" class="brand" aria-label="HedgeDCA Home">
+          <img src="/HedgeDCAlogo.png" alt="HedgeDCA logo" />
+          <span class="tagline">Moving Beyond the <span class="accent">Average</span></span>
+        </a>
 
-  <header>
-    <div class="brand">HedgeDCA</div>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#learn">Learn</a>
+          <a href="#contact">Contact</a>
+        </nav>
 
-    <!-- Desktop nav -->
-    <nav class="primary" aria-label="Primary">
-      <a href="#method">The Method</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
+        <div class="cta">
+          <a class="btn" href="#get-started">Get Started</a>
+        </div>
 
-    <!-- Mobile nav (CSS-only) -->
-    <details class="menu">
-      <summary aria-label="Open menu">☰</summary>
-      <nav aria-label="Mobile Primary">
-        <a href="#method">The Method</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </details>
+        <button class="burger" id="burger" aria-expanded="false" aria-controls="mobile-panel" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile dropdown (animated height) -->
+    <div id="mobile-panel" class="mobile-panel" hidden>
+      <div class="container mobile-inner">
+        <nav class="mobile-menu" aria-label="Mobile">
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#learn">Learn</a>
+          <a href="#contact">Contact</a>
+          <a class="btn" href="#get-started" style="justify-self:start;">Get Started</a>
+        </nav>
+      </div>
+    </div>
   </header>
 
-  <div class="notice">🚧 HedgeDCA is under development — full launch coming soon.</div>
-
+  <!-- MAIN -->
   <main>
     <section class="hero">
-      <h1>Moving Beyond the Average</h1>
-      <h2>The next evolution in disciplined investing</h2>
-      <p>A smarter approach to accumulation—built to protect profits and lower your average cost.</p>
-      <a href="#notify" class="cta">Get Early Updates</a>
-      <p class="subtle">This site is in early development — features and strategy details are coming soon.</p>
+      <div class="container">
+        <div class="hero-card">
+          <div class="kicker">HedgeDCA</div>
+          <h1 class="headline">Portfolio discipline without the spreadsheet headache.</h1>
+          <p class="sub">Automate rules, visualize targets, and execute with confidence. Built around your strategy, not someone else’s.</p>
+          <div>
+            <a class="btn" href="#get-started">Launch App</a>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section id="method" class="section">
-      <h3>The Method</h3>
-      <p>Content coming soon.</p>
+    <section id="features">
+      <div class="container">
+        <div class="cards">
+          <article class="card">
+            <h3>Weighted Targets</h3>
+            <p>Pin BTC, tune tiers, and keep allocations honest with live drift checks.</p>
+          </article>
+          <article class="card">
+            <h3>Rule-Based Ladders</h3>
+            <p>Pre-plan buys/sells with fee-aware AEF math baked in.</p>
+          </article>
+          <article class="card">
+            <h3>Mobile-First</h3>
+            <p>Clean on desktop, buttery on phones. Hamburger menu included.</p>
+          </article>
+        </div>
+      </div>
     </section>
 
-    <section id="about" class="section">
-      <h3>About</h3>
-      <p>Content coming soon.</p>
+    <section id="pricing">
+      <div class="container">
+        <div class="card">
+          <h3>Pricing</h3>
+          <p>Founders beta. Details coming soon.</p>
+        </div>
+      </div>
     </section>
 
-    <section id="contact" class="section">
-      <h3>Contact</h3>
-      <p>Content coming soon.</p>
+    <section id="learn">
+      <div class="container">
+        <div class="card">
+          <h3>Learn</h3>
+          <p>Guides on DCA discipline, limit orders, and fee-inclusive AEF.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="card">
+          <h3>Contact</h3>
+          <p>Questions or feedback? Ping us.</p>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer>
-    © <span id="year"></span> HedgeDCA. All rights reserved.
+  <!-- FOOTER (single instance only) -->
+  <footer class="site-footer" id="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <img src="/HedgeDCAlogo.png" alt="HedgeDCA logo small" />
+        <strong>HedgeDCA</strong>
+      </div>
+      <div class="small">© <span id="year"></span> HedgeDCA. All rights reserved.</div>
+      <div class="fineprint">Built for disciplined investors. This site uses cookies only for essential functionality.</div>
+    </div>
   </footer>
 
   <script>
-    // Fill year (no other JS needed)
-    document.getElementById('year').textContent = new Date().getFullYear();
+    (function(){
+      // Guard against duplicate footers or headers if residual DOM exists
+      const seen = new Set();
+      ["site-header","site-footer"].forEach(id=>{
+        document.querySelectorAll(`#${id}`).forEach(el=>{
+          if(seen.has(id)) el.remove(); else seen.add(id);
+        });
+      });
+
+      // Footer year
+      const y=document.getElementById('year'); if(y) y.textContent = new Date().getFullYear();
+
+      // Mobile menu toggle with animated height
+      const burger = document.getElementById('burger');
+      const panel = document.getElementById('mobile-panel');
+      if(burger && panel){
+        const open = () => { panel.hidden = false; panel.classList.add('open'); burger.setAttribute('aria-expanded','true'); };
+        const close = () => { panel.classList.remove('open'); burger.setAttribute('aria-expanded','false'); setTimeout(()=>{ if(!panel.classList.contains('open')) panel.hidden = true; }, 360); };
+        burger.addEventListener('click', ()=>{
+          const expanded = burger.getAttribute('aria-expanded') === 'true';
+          expanded ? close() : open();
+        });
+      }
+    })();
   </script>
 </body>
 </html>
