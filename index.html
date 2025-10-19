@@ -1,69 +1,139 @@
-<!-- v1.5 HedgeDCA -->
+<!-- v3.0 CLEAN START — single file, no external CSS/JS, no logo image yet -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HedgeDCA | Moving Beyond the Average</title>
-  <link rel="icon" type="image/png" href="images/favicon.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/main.css?v=1.5" />
+  <meta name="color-scheme" content="light" />
+
+  <!-- Small badge so we KNOW we’re on the fresh file -->
+  <style>
+    #ver { position: fixed; top: 6px; left: 6px; background:#111; color:#fff; padding:2px 6px;
+           font:12px/1.2 monospace; z-index: 9999; border-radius:4px; opacity:.9; }
+  </style>
+
+  <!-- Inline CSS only (super simple) -->
+  <style>
+    :root { --teal:#00a99d; --darkteal:#007e76; --gray:#f5f5f5; --text:#222; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    html, body { height:100%; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:#fff; color:var(--text);
+      display:flex; flex-direction:column; min-height:100vh;
+      font-size:15px; line-height:1.55;
+    }
+    header {
+      background:linear-gradient(90deg, var(--teal), var(--darkteal));
+      color:#fff; padding:1.2rem 2rem;
+      display:flex; align-items:center; justify-content:space-between; gap:1rem;
+      box-shadow:0 1px 0 rgba(0,0,0,.08);
+    }
+    .brand { font-weight:700; font-size:1.4rem; letter-spacing:.2px; }
+    nav.primary { display:flex; gap:1.2rem; }
+    nav.primary a { color:#fff; text-decoration:none; font-weight:500; opacity:.95; }
+    nav.primary a:hover { opacity:1; }
+
+    /* Mobile menu (pure HTML/CSS via details/summary) */
+    details.menu { display:none; position:relative; }
+    details.menu > summary {
+      list-style:none; cursor:pointer; border:0; background:transparent; color:#fff;
+      display:inline-flex; align-items:center; justify-content:center; padding:.4rem .5rem;
+      font-size:1.4rem; line-height:1;
+    }
+    details.menu > summary::-webkit-details-marker { display:none; }
+    details.menu[open] > summary { opacity:.9; }
+    details.menu nav {
+      position:absolute; right:0; top:calc(100% + 8px);
+      background:linear-gradient(90deg, var(--teal), var(--darkteal));
+      border:1px solid rgba(255,255,255,.25); border-radius:8px;
+      box-shadow:0 6px 18px rgba(0,0,0,.2);
+      padding:.6rem .8rem; display:grid; gap:.4rem; min-width:180px;
+    }
+    details.menu nav a { color:#fff; text-decoration:none; font-weight:500; padding:.45rem .5rem; border-radius:6px; }
+    details.menu nav a:hover { background:rgba(255,255,255,.12); }
+
+    .notice { background:var(--gray); color:var(--darkteal); text-align:center;
+      padding:.6rem 1rem; font-weight:600; border-bottom:1px solid rgba(0,0,0,.05); }
+
+    .hero {
+      flex:1; background:var(--gray);
+      display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+      padding:4rem 2rem;
+    }
+    .hero h1 { font-size:2.6rem; color:var(--darkteal); margin-bottom:.3em; }
+    .hero h2 { font-size:1.4rem; color:var(--teal); margin-bottom:1.1em; font-weight:500; }
+    .hero p  { font-size:1.02rem; max-width:600px; margin-bottom:2em; }
+    .cta { background:var(--teal); color:#fff; padding:.8em 1.6em; border-radius:6px; text-decoration:none; font-weight:600; }
+    .cta:hover { background:var(--darkteal); }
+    .subtle { margin-top:1rem; color:#666; font-weight:500; }
+
+    .section { padding:3rem 1.5rem; max-width:1000px; margin:0 auto; color:#555; }
+    .section h3 { color:var(--darkteal); margin-bottom:.5rem; }
+
+    footer { background:var(--darkteal); color:#fff; text-align:center; padding:1rem 0; font-size:.9rem; }
+
+    @media (max-width: 600px) {
+      body { font-size:13.6px; line-height:1.5; }
+      header { padding:.85rem 1rem; }
+      nav.primary { display:none; }        /* hide desktop nav */
+      details.menu { display:inline-block; } /* show mobile hamburger */
+      .hero { padding:2.6rem 1.1rem; }
+      .hero h1 { font-size:2.2rem; }
+      .hero h2 { font-size:1.3rem; }
+      .hero p  { font-size:.96rem; }
+      .cta { font-size:.92rem; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { transition:none!important; animation:none!important; } }
+  </style>
 </head>
 <body>
+  <div id="ver">v3.0</div>
 
   <header>
-    <div class="brand">
-      <img src="images/HedgeDCAlogo.png" alt="HedgeDCA logo" />
-    </div>
+    <div class="brand">HedgeDCA</div>
 
-    <nav class="primary-nav" aria-label="Primary">
+    <!-- Desktop nav -->
+    <nav class="primary" aria-label="Primary">
       <a href="#method">The Method</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
 
-    <button class="menu-toggle" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
-      <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
-        <path fill="currentColor" d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
-      </svg>
-    </button>
+    <!-- Mobile nav (CSS-only) -->
+    <details class="menu">
+      <summary aria-label="Open menu">☰</summary>
+      <nav aria-label="Mobile Primary">
+        <a href="#method">The Method</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </details>
   </header>
 
-  <div class="notice-banner" role="status" aria-live="polite">
-    🚧 HedgeDCA is under development — full launch coming soon.
-  </div>
-
-  <div id="mobile-menu" class="mobile-panel" hidden>
-    <nav aria-label="Mobile Primary">
-      <a href="#method">The Method</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </div>
+  <div class="notice">🚧 HedgeDCA is under development — full launch coming soon.</div>
 
   <main>
     <section class="hero">
-      <h1>HedgeDCA</h1>
-      <h2>Moving Beyond the Average</h2>
-      <p>
-        The next evolution in disciplined investing.<br>
-        A smarter approach to accumulation—built to protect profits and lower your average cost.
-      </p>
+      <h1>Moving Beyond the Average</h1>
+      <h2>The next evolution in disciplined investing</h2>
+      <p>A smarter approach to accumulation—built to protect profits and lower your average cost.</p>
       <a href="#notify" class="cta">Get Early Updates</a>
-      <p class="subtle-note">This site is in early development — features and strategy details are coming soon.</p>
+      <p class="subtle">This site is in early development — features and strategy details are coming soon.</p>
     </section>
 
-    <section id="method" class="section placeholder">
+    <section id="method" class="section">
       <h3>The Method</h3>
       <p>Content coming soon.</p>
     </section>
 
-    <section id="about" class="section placeholder">
+    <section id="about" class="section">
       <h3>About</h3>
       <p>Content coming soon.</p>
     </section>
 
-    <section id="contact" class="section placeholder">
+    <section id="contact" class="section">
       <h3>Contact</h3>
       <p>Content coming soon.</p>
     </section>
@@ -73,97 +143,9 @@
     © <span id="year"></span> HedgeDCA. All rights reserved.
   </footer>
 
-  <!-- (Optional) external file; fine to keep -->
-  <script src="js/main.js?v=1.3"></script>
-
-  <!-- Inline fallback to GUARANTEE the toggle works -->
   <script>
-    // v1.5 inline toggle (uses [hidden] so it always shows/hides)
-    (function () {
-      var yearEl = document.getElementById('year');
-      if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-      var toggle = document.querySelector('.menu-toggle');
-      var panel  = document.getElementById('mobile-menu');
-      if (!toggle || !panel) return;
-
-      var isOpen = false;
-      function setMenu(open) {
-        isOpen = !!open;
-        panel.hidden = !open;              // ← show/hide for real
-        toggle.setAttribute('aria-expanded', String(open));
-        toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-      }
-
-      toggle.addEventListener('click', function () {
-        setMenu(!isOpen);
-      });
-
-      // Reset if resized wider than mobile breakpoint
-      window.addEventListener('resize', function () {
-        if (window.matchMedia('(max-width: 600px)').matches === false) {
-          setMenu(false);
-        }
-      });
-    })();
+    // Fill year (no other JS needed)
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
-</body>
-</html>
-  </footer>
-
-  <!-- Keep the external file if you like, but the inline script below guarantees the toggle works -->
-  <script src="js/main.js?v=1.3"></script>
-
-  <!-- Inline fallback to guarantee hamburger toggle works -->
-  <script>
-    // v1.4 inline toggle (guaranteed to run)
-    (function () {
-      var yearEl = document.getElementById('year');
-      if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-      var toggle = document.querySelector('.menu-toggle');
-      var panel  = document.getElementById('mobile-menu');
-      if (!toggle || !panel) return;
-
-      var isOpen = false;
-      function setMenu(open) {
-        if (open) {
-          panel.classList.add('is-open');
-          toggle.setAttribute('aria-expanded', 'true');
-          toggle.setAttribute('aria-label', 'Close menu');
-        } else {
-          panel.classList.remove('is-open');
-          toggle.setAttribute('aria-expanded', 'false');
-          toggle.setAttribute('aria-label', 'Open menu');
-        }
-      }
-
-      toggle.addEventListener('click', function () {
-        isOpen = !isOpen;
-        setMenu(isOpen);
-      });
-
-      // Reset if resized wider than mobile breakpoint
-      window.addEventListener('resize', function () {
-        if (window.matchMedia('(max-width: 600px)').matches === false) {
-          isOpen = false;
-          setMenu(false);
-        }
-      });
-    })();
-  </script>
-</body>
-</html>
-    © <span id="year"></span> HedgeDCA. All rights reserved.
-  </footer>
-
-  <script src="js/main.js?v=1.3"></script>
-</body>
-</html>
-  <footer>
-    © <span id="year"></span> HedgeDCA. All rights reserved.
-  </footer>
-
-  <script src="/js/main.js?v=0.4"></script>
 </body>
 </html>
