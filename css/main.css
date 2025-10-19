@@ -1,4 +1,4 @@
-/* v1.3 HedgeDCA — fixed desktop logo + small mobile font */
+/* v1.5 HedgeDCA — stable desktop logo + reliable mobile menu */
 :root {
   --teal: #00a99d;
   --darkteal: #007e76;
@@ -35,7 +35,7 @@ header {
   z-index: 10;
 }
 
-/* ✅ Desktop logo sizing */
+/* Desktop logo sizing */
 .brand img {
   width: clamp(180px, 22vw, 360px);
   height: auto;
@@ -71,6 +71,94 @@ nav.primary-nav a:hover { opacity: 0.85; }
 /* Notice */
 .notice-banner {
   background: var(--gray);
+  color: var(--darkteal);
+  text-align: center;
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+/* Mobile Panel — now using [hidden] to control visibility */
+.mobile-panel {
+  background: linear-gradient(90deg, var(--teal), var(--darkteal));
+  border-top: 1px solid rgba(255,255,255,0.2);
+  padding: 0; /* filled in mobile media query */
+}
+.mobile-panel[hidden] { display: none !important; }  /* ← truly hidden */
+.mobile-panel nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.6rem 1rem 1rem;
+}
+.mobile-panel a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.96rem;
+  opacity: 0.95;
+  transition: opacity 0.2s ease;
+}
+.mobile-panel a:hover { opacity: 1; }
+
+/* Hero */
+.hero {
+  flex: 1;
+  background: var(--gray);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+}
+.hero h1 { font-size: 3rem; color: var(--darkteal); margin-bottom: 0.3em; }
+.hero h2 { font-size: 1.6rem; color: var(--teal); margin-bottom: 1.2em; font-weight: 400; }
+.hero p  { font-size: 1.05rem; max-width: 600px; margin-bottom: 2em; }
+.cta {
+  background: var(--teal);
+  color: white;
+  padding: 0.9em 2em;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+.cta:hover { background: var(--darkteal); }
+.subtle-note { margin-top: 1rem; color: #666; font-weight: 500; }
+
+/* Placeholder Sections */
+.section { padding: 3rem 1.5rem; max-width: 1000px; margin: 0 auto; }
+.section.placeholder { color: #666; }
+.section.placeholder h3 { color: var(--darkteal); margin-bottom: 0.5rem; }
+
+/* Footer */
+footer { background: var(--darkteal); color: white; text-align: center; padding: 1rem 0; font-size: 0.9rem; }
+
+/* Mobile (≤600px) */
+@media (max-width: 600px) {
+  body { font-size: 13.6px; line-height: 1.5; }
+
+  header { padding: 0.85rem 1rem; }
+
+  .brand img { width: clamp(150px, 35vw, 250px); height: auto; }
+
+  nav.primary-nav { display: none !important; }
+  .menu-toggle { display: inline-flex !important; align-items: center; justify-content: center; }
+
+  .mobile-panel { padding: 0.4rem 0 0.6rem; }  /* some breathing room */
+
+  .hero { padding: 2.6rem 1.1rem; }
+  .hero h1 { font-size: 2.25rem; }
+  .hero h2 { font-size: 1.38rem; }
+  .hero p  { font-size: 0.96rem; }
+
+  .cta { font-size: 0.9rem; padding: 0.75em 1.6em; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
   color: var(--darkteal);
   text-align: center;
   padding: 0.6rem 1rem;
