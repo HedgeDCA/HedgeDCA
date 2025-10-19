@@ -17,24 +17,29 @@
   -->
   <style id="hedgedca-styles">
     html{scroll-behavior:smooth}
-
-    /* Scope EVERYTHING to prevent foreign CSS from winning */
+    /* Scoped */
     #hedgedca-root, #hedgedca-root *{box-sizing:border-box}
     #hedgedca-root{font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Noto Sans",sans-serif;color:#222 !important;background:#ffffff !important}
     #hedgedca-root img{max-width:100%;display:block}
     #hedgedca-root a{color:inherit;text-decoration:none}
     #hedgedca-root .container{max-width:1100px;margin:0 auto;padding:0 20px}
 
-    /* Header */
-    #hedgedca-root .site-header{position:sticky;top:0;z-index:50;background:#ffffff !important}
-    #hedgedca-root .nav-wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:86px}
-    #hedgedca-root .brand{display:flex;align-items:center;gap:16px}
-    #hedgedca-root .brand img{height:clamp(60px, 10vw, 120px) !important;width:auto}
-    #hedgedca-root .brand .tagline{font-weight:700;letter-spacing:.2px;white-space:nowrap;font-size:clamp(14px,2.1vw,18px)}
+    /* Header (fixed height, teal divider via pseudo-element so it doesn't move) */
+    #hedgedca-root .site-header{position:sticky;top:0;z-index:60;background:#ffffff !important}
+    #hedgedca-root .site-header::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:#00a99d;pointer-events:none}
+    #hedgedca-root .nav-wrap{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;height:80px}
+    #hedgedca-root .brand{display:flex;align-items:center;gap:12px;min-width:0}
+    #hedgedca-root .brand img{height:60px !important;width:auto}
+    #hedgedca-root .brand .tagline{font-weight:700;letter-spacing:.2px;white-space:nowrap;font-size:14px}
     #hedgedca-root .brand .tagline .accent{color:#007e76 !important}
 
+    /* Hide/trim tagline on very small screens to avoid hamburger overlap */
+    @media (max-width: 520px){
+      #hedgedca-root .brand .tagline{display:none}
+    }
+
     /* Desktop nav */
-    #hedgedca-root .nav-links{display:none;gap:22px;align-items:center}
+    #hedgedca-root .nav-links{display:none;gap:20px;align-items:center}
     #hedgedca-root .nav-links a{padding:10px 12px;border-radius:10px;font-weight:600}
     #hedgedca-root .nav-links a:hover{background:#f5f5f5}
 
@@ -50,25 +55,25 @@
     #hedgedca-root .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
     #hedgedca-root .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
 
-    /* Mobile dropdown */
-    #hedgedca-root .mobile-panel{overflow:hidden;max-height:0;transition:max-height .35s ease}
+    /* Mobile dropdown overlays header; doesn't push it so teal line stays put */
+    #hedgedca-root .mobile-panel{position:absolute;left:0;right:0;top:80px;overflow:hidden;max-height:0;transition:max-height .3s ease;background:#ffffff;border-bottom:1px solid #eee;box-shadow:0 12px 24px rgba(0,0,0,.08)}
     #hedgedca-root .mobile-panel.open{max-height:420px}
-    #hedgedca-root .mobile-inner{padding:10px 0 16px;border-bottom:1px solid #eee}
+    #hedgedca-root .mobile-inner{padding:10px 0 16px}
     #hedgedca-root .mobile-menu{display:grid;gap:8px}
-    #hedgedca-root .mobile-menu a{padding:12px;border-radius:12px;font-weight:600}
+    #hedgedca-root .mobile-menu a{padding:12px 20px;border-radius:12px;font-weight:600}
     #hedgedca-root .mobile-menu a:hover{background:#f5f5f5}
 
-    /* Hero */
-    #hedgedca-root .hero{padding:48px 0}
-    #hedgedca-root .hero-card{border:2px solid #e0faf6;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,.08);padding:28px;display:grid;gap:18px;background:#ffffff}
+    /* Hero: stronger teal so it's clearly visible */
+    #hedgedca-root .hero{padding:48px 0;background:#eafffc}
+    #hedgedca-root .hero-card{border:2px solid #c9f7f1;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,.08);padding:28px;display:grid;gap:18px;background:#ffffff}
     #hedgedca-root .kicker{font-weight:700;color:#007e76;letter-spacing:.3px}
-    #hedgedca-root .headline{font-size:clamp(30px, 4.5vw, 44px);line-height:1.12;margin:0;font-weight:800}
+    #hedgedca-root .headline{font-size:clamp(28px, 4.5vw, 40px);line-height:1.12;margin:0;font-weight:800}
     #hedgedca-root .sub{color:#333;max-width:60ch}
 
     /* Sections */
     #hedgedca-root section{padding:28px 0;scroll-margin-top:100px}
     #hedgedca-root .cards{display:grid;grid-template-columns:1fr;gap:16px}
-    #hedgedca-root .card{border:1px solid #dfe7e6;border-radius:16px;padding:18px;box-shadow:0 10px 25px rgba(0,0,0,.06)}
+    #hedgedca-root .card{border:1px solid #dfe7e6;border-radius:16px;padding:18px;box-shadow:0 10px 25px rgba(0,0,0,.06);background:#fff}
     #hedgedca-root .card h3{margin:6px 0 10px}
 
     /* Footer */
@@ -79,12 +84,14 @@
     #hedgedca-root .small{opacity:.9;font-size:.95rem}
     #hedgedca-root .fineprint{opacity:.65;font-size:.85rem}
 
-    /* Responsive */
+    /* Desktop adjustments */
     @media (min-width: 860px){
       #hedgedca-root .nav-links{display:flex}
       #hedgedca-root .cta{display:block}
       #hedgedca-root .burger{display:none}
       #hedgedca-root .mobile-panel{display:none}
+      #hedgedca-root .brand img{height:72px !important}
+      #hedgedca-root .brand .tagline{font-size:16px;display:inline}
       #hedgedca-root .hero{padding:72px 0}
       #hedgedca-root .hero-card{padding:36px}
       #hedgedca-root section{padding:44px 0}
