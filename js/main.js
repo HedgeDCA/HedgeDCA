@@ -1,36 +1,38 @@
-// v1.3 HedgeDCA — hamburger toggle fix + year
+// v1.8 HedgeDCA — JS hamburger on GitHub Pages
 
-// auto-fill current year
-document.getElementById('year').textContent = new Date().getFullYear();
+// Fill year
+var yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-// mobile menu toggle
-const toggle = document.querySelector('.menu-toggle');
-const panel  = document.getElementById('mobile-menu');
-let isOpen = false;
+// Mobile menu toggle (no dependencies)
+(function () {
+  var toggle = document.querySelector('.menu-toggle');
+  var panel  = document.getElementById('mobile-menu');
+  if (!toggle || !panel) return;
 
-function setMenu(open) {
-  if (open) {
-    panel.classList.add('is-open');
-    toggle.setAttribute('aria-expanded', 'true');
-    toggle.setAttribute('aria-label', 'Close menu');
-  } else {
-    panel.classList.remove('is-open');
-    toggle.setAttribute('aria-expanded', 'false');
-    toggle.setAttribute('aria-label', 'Open menu');
+  var isOpen = false;
+
+  function setMenu(open) {
+    isOpen = !!open;
+    if (open) {
+      panel.removeAttribute('hidden');    // show
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Close menu');
+    } else {
+      panel.setAttribute('hidden', '');   // hide
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+    }
   }
-}
 
-if (toggle && panel) {
-  toggle.addEventListener('click', () => {
-    isOpen = !isOpen;
-    setMenu(isOpen);
+  toggle.addEventListener('click', function () {
+    setMenu(!isOpen);
   });
 
-  // reset when window is resized wider than mobile breakpoint
-  window.addEventListener('resize', () => {
+  // Close the panel if resized wider than mobile breakpoint
+  window.addEventListener('resize', function () {
     if (window.matchMedia('(max-width: 600px)').matches === false) {
-      isOpen = false;
       setMenu(false);
     }
   });
-}
+})();
