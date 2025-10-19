@@ -1,44 +1,45 @@
-<!-- v0.4 site-bones -->
+<!-- v1.6 HedgeDCA — CSS-only mobile menu -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HedgeDCA | Moving Beyond the Average</title>
-  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link rel="icon" type="image/png" href="images/favicon.png" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/main.css?v=0.4" />
+  <link rel="stylesheet" href="css/main.css?v=1.6" />
 </head>
 <body>
 
   <header>
     <div class="brand">
-      <img src="/images/HedgeDCAlogo.png" alt="HedgeDCA logo" />
+      <img src="images/HedgeDCAlogo.png" alt="HedgeDCA logo" />
     </div>
 
+    <!-- Desktop nav -->
     <nav class="primary-nav" aria-label="Primary">
       <a href="#method">The Method</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
 
-    <button class="menu-toggle" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
-      <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
-        <path fill="currentColor" d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
-      </svg>
-    </button>
+    <!-- Mobile nav (CSS-only via <details>) -->
+    <details class="mobile-nav">
+      <summary aria-label="Open menu">
+        <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="currentColor" d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
+        </svg>
+      </summary>
+      <nav aria-label="Mobile Primary">
+        <a href="#method">The Method</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </details>
   </header>
 
   <div class="notice-banner" role="status" aria-live="polite">
     🚧 HedgeDCA is under development — full launch coming soon.
-  </div>
-
-  <div id="mobile-menu" class="mobile-panel">
-    <nav aria-label="Mobile Primary">
-      <a href="#method">The Method</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
   </div>
 
   <main>
@@ -71,6 +72,14 @@
 
   <footer>
     © <span id="year"></span> HedgeDCA. All rights reserved.
+  </footer>
+
+  <!-- Tiny inline year script (safe to keep; not used for menu) -->
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
   </footer>
 
   <script src="/js/main.js?v=0.4"></script>
