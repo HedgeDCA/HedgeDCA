@@ -3,65 +3,228 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HedgeDCA — Debug Probe</title>
+  <title>HedgeDCA — Moving Beyond the Average</title>
   <link rel="icon" href="/favicon.png" type="image/png" />
-  <style>
-    /* === DEBUG PROBE ===
-       Purpose: prove (1) styles load, (2) logo path works, (3) hamburger markup shows
-       If you do NOT see a teal background, your page isn't loading <style>.
-    */
-    html,body{margin:0;padding:0;font-family:system-ui, Arial, sans-serif}
-    body{background:#007e76;color:#fff}
-    .wrap{max-width:900px;margin:0 auto;padding:24px}
-    .row{display:flex;align-items:center;gap:16px}
-    .card{background:#0f1f1e;color:#e7fffc;border-radius:12px;padding:16px;margin-top:16px}
-    img{max-width:100%;height:48px}
-    button{padding:10px 14px;border-radius:10px;border:0}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="images/HedgeDCAlogo.png" />
+
+  <!-- FINAL WORKING INDEX (inline CSS + JS, proven paths) -->
+  <style id="hedgedca-styles">
+    /* Base */
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial,"Noto Sans",sans-serif;color:#222;background:#ffffff}
+    img{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+
+    /* Header */
+    .site-header{position:sticky;top:0;z-index:50;background:#ffffff;border-bottom:1px solid #eaeaea}
+    .nav-wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:70px}
+    .brand{display:flex;align-items:center;gap:14px}
+    .brand img{height:44px;width:auto}
+    .brand .tagline{font-weight:600;letter-spacing:.2px;white-space:nowrap}
+    .brand .tagline .accent{color:#007e76}
+
+    /* Desktop nav */
+    .nav-links{display:none;gap:22px;align-items:center}
+    .nav-links a{padding:8px 10px;border-radius:10px;font-weight:500}
+    .nav-links a:hover{background:#f5f5f5}
+
+    /* CTA */
+    .cta{display:none}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;border:1px solid #007e76;color:#fff;background:linear-gradient(135deg,#00a99d,#007e76);box-shadow:0 10px 25px rgba(0,0,0,.08);font-weight:600;transition:filter .2s, transform .2s}
+    .btn:hover{filter:saturate(1.1);transform:translateY(-1px)}
+
+    /* Hamburger */
+    .burger{appearance:none;border:0;background:#fff;padding:10px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,.08);display:inline-flex;flex-direction:column;gap:4px;cursor:pointer}
+    .burger span{width:24px;height:2px;background:#333;border-radius:2px;transition:transform .3s,opacity .3s}
+    .burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+    .burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+    .burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+    /* Mobile dropdown */
+    .mobile-panel{overflow:hidden;max-height:0;transition:max-height .35s ease}
+    .mobile-panel.open{max-height:420px}
+    .mobile-inner{padding:10px 0 16px;border-bottom:1px solid #eee}
+    .mobile-menu{display:grid;gap:8px}
+    .mobile-menu a{padding:12px;border-radius:12px;font-weight:500}
+    .mobile-menu a:hover{background:#f5f5f5}
+
+    /* Hero */
+    .hero{padding:48px 0;background:linear-gradient(180deg,#ffffff, #f8fffe)}
+    .hero-card{border:1px solid #e7f4f2;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,.08);padding:28px;display:grid;gap:18px}
+    .kicker{font-weight:600;color:#007e76;letter-spacing:.3px}
+    .headline{font-size:clamp(28px, 4vw, 40px);line-height:1.12;margin:0;font-weight:700}
+    .sub{color:#444;max-width:60ch}
+
+    /* Sections */
+    section{padding:28px 0}
+    .cards{display:grid;grid-template-columns:1fr;gap:16px}
+    .card{border:1px solid #eee;border-radius:16px;padding:18px;box-shadow:0 10px 25px rgba(0,0,0,.08)}
+    .card h3{margin:6px 0 10px}
+
+    /* Footer */
+    footer.site-footer{margin-top:36px;background:#0f1f1e;color:#e7fffc}
+    .footer-inner{display:grid;gap:12px;padding:22px 0}
+    .footer-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .footer-top img{height:30px}
+    .small{opacity:.9;font-size:.9rem}
+    .fineprint{opacity:.65;font-size:.82rem}
+
+    /* Responsive */
+    @media (min-width: 860px){
+      .nav-links{display:flex}
+      .cta{display:block}
+      .burger{display:none}
+      .mobile-panel{display:none}
+      .hero{padding:64px 0}
+      .hero-card{padding:36px}
+      section{padding:40px 0}
+      .cards{grid-template-columns:repeat(3,1fr)}
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>HedgeDCA — Debug Probe</h1>
+  <!-- HEADER -->
+  <header class="site-header" id="site-header">
+    <div class="container">
+      <div class="nav-wrap">
+        <a href="#" class="brand" aria-label="HedgeDCA Home">
+          <img class="logo" src="images/HedgeDCAlogo.png" alt="HedgeDCA logo" />
+          <span class="tagline">Moving Beyond the <span class="accent">Average</span></span>
+        </a>
 
-    <div class="card">
-      <h2>1) STYLE CHECK</h2>
-      <p>You should see a <strong>teal background</strong>. If not, inline CSS is being stripped or overridden.</p>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#learn">Learn</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="cta">
+          <a class="btn" href="#get-started">Get Started</a>
+        </div>
+
+        <button class="burger" id="burger" aria-expanded="false" aria-controls="mobile-panel" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
 
-    <div class="card">
-      <h2>2) LOGO PATH CHECK</h2>
-      <p>Below tries 3 paths in order. Tell me which renders:</p>
-      <div class="row">
-        <div>
-          <div>images/HedgeDCAlogo.png</div>
-          <img src="images/HedgeDCAlogo.png?v=2" alt="logo images/">
-        </div>
-        <div>
-          <div>/images/HedgeDCAlogo.png</div>
-          <img src="/images/HedgeDCAlogo.png?v=2" alt="logo /images/">
-        </div>
-        <div>
-          <div>HedgeDCAlogo.png</div>
-          <img src="HedgeDCAlogo.png?v=2" alt="logo root">
+    <!-- Mobile dropdown (animated height) -->
+    <div id="mobile-panel" class="mobile-panel" hidden>
+      <div class="container mobile-inner">
+        <nav class="mobile-menu" aria-label="Mobile">
+          <a href="#features">Features</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#learn">Learn</a>
+          <a href="#contact">Contact</a>
+          <a class="btn" href="#get-started" style="justify-self:start;">Get Started</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-card">
+          <div class="kicker">HedgeDCA</div>
+          <h1 class="headline">Portfolio discipline without the spreadsheet headache.</h1>
+          <p class="sub">Automate rules, visualize targets, and execute with confidence. Built around your strategy, not someone else’s.</p>
+          <div>
+            <a class="btn" href="#get-started">Launch App</a>
+          </div>
         </div>
       </div>
-      <p>If none render, open the direct URL in a new tab (e.g., <code>/images/HedgeDCAlogo.png</code>) and tell me what you get.</p>
-    </div>
+    </section>
 
-    <div class="card">
-      <h2>3) HAMBURGER VISIBILITY</h2>
-      <p>You should see this button on ALL screen sizes (no media queries here):</p>
-      <button>☰ Hamburger (test)</button>
-    </div>
+    <section id="features">
+      <div class="container">
+        <div class="cards">
+          <article class="card">
+            <h3>Weighted Targets</h3>
+            <p>Pin BTC, tune tiers, and keep allocations honest with live drift checks.</p>
+          </article>
+          <article class="card">
+            <h3>Rule-Based Ladders</h3>
+            <p>Pre-plan buys/sells with fee-aware AEF math baked in.</p>
+          </article>
+          <article class="card">
+            <h3>Mobile-First</h3>
+            <p>Clean on desktop, sharp on phones. Hamburger menu included.</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-    <div class="card">
-      <h2>Next</h2>
-      <ol>
-        <li>If teal BG shows and one of the logos renders, we’ll lock that working path into your real page.</li>
-        <li>If teal BG does NOT show, your host/CMS is stripping <code>&lt;style&gt;</code> or an older stylesheet is overriding it. We’ll swap to a linked CSS file with a hard cache-buster.</li>
-        <li>If the button is visible here but not on the real page, the issue is CSS breakpoints. Easy fix.</li>
-      </ol>
+    <section id="pricing">
+      <div class="container">
+        <div class="card">
+          <h3>Pricing</h3>
+          <p>Founders beta. Details coming soon.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="learn">
+      <div class="container">
+        <div class="card">
+          <h3>Learn</h3>
+          <p>Guides on DCA discipline, limit orders, and fee-inclusive AEF.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="card">
+          <h3>Contact</h3>
+          <p>Questions or feedback? Ping us.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tall filler so anchors scroll on desktop for testing -->
+    <section style="height:40vh"></section>
+    <section style="height:40vh"></section>
+  </main>
+
+  <!-- FOOTER (single instance only) -->
+  <footer class="site-footer" id="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <img class="logo" src="images/HedgeDCAlogo.png" alt="HedgeDCA logo small" />
+        <strong>HedgeDCA</strong>
+      </div>
+      <div class="small">© <span id="year"></span> HedgeDCA. All rights reserved.</div>
+      <div class="fineprint">Built for disciplined investors. This site uses cookies only for essential functionality.</div>
     </div>
-  </div>
+  </footer>
+
+  <script>
+    (function(){
+      // Deduplicate header/footer if stale DOM remains
+      const ids=["site-header","site-footer"]; ids.forEach(id=>{ const els=[...document.querySelectorAll('#'+id)]; if(els.length>1){ els.slice(1).forEach(e=>e.remove()); }});
+
+      // Footer year
+      const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
+
+      // Mobile menu toggle
+      const burger=document.getElementById('burger');
+      const panel=document.getElementById('mobile-panel');
+      function open(){ panel.hidden=false; panel.classList.add('open'); burger.setAttribute('aria-expanded','true'); }
+      function close(){ panel.classList.remove('open'); burger.setAttribute('aria-expanded','false'); setTimeout(()=>{ if(!panel.classList.contains('open')) panel.hidden=true; }, 360); }
+      if(burger && panel){
+        burger.addEventListener('click',()=>{
+          const expanded=burger.getAttribute('aria-expanded')==='true';
+          expanded?close():open();
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
